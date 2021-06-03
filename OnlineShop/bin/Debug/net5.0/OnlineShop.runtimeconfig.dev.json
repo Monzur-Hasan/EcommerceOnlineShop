@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\monzu\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\monzu\\.nuget\\packages"
+    ]
+  }
+}

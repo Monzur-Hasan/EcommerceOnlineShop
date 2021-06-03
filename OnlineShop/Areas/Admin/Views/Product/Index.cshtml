@@ -1,0 +1,134 @@
+﻿@model IEnumerable<OnlineShop.Models.Products>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br />
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-info">Product List</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Create" class="btn btn-info"> <i class="fas fa-plus"></i> &nbsp; Add New Product</a>
+    </div>
+</div>
+<br />
+
+<form method="post" asp-action="Index">
+    <div class="form-group row">
+        <div class="col-4">
+            <input type="number" name="lowPrice" class="form-control" placeholder="Click on enter low price for search product" />
+        </div>
+        <div class="col-4">
+            <input type="number" name="highPrice" class="form-control" placeholder="Click on enter high price for search product" />
+        </div>
+        <div class="col-3">
+            <input type="submit" value="Search" class="btn btn-success" />
+        </div>
+        <div class="col-1"></div>
+    </div>
+</form>
+
+<div>
+    <table class="table table-striped border" id="myTable">
+        <thead>
+            <tr class="table-info">
+                <th>
+                    @Html.DisplayNameFor(c => c.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(c => c.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(c => c.ProductColor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(c => c.IsAvailable)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(c => c.ProductTypeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(c => c.SpecialTagId)
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.ProductColor</td>
+                    <td>@item.IsAvailable</td>
+                    <td>@item.ProductTypes.ProductType</td>
+                    <td>@item.SpecialTag.Name</td>
+                    <td>
+                        <partial name="_ButtonPartial" model="@item.Id" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <script type="text/javascript">
+
+        //$(document).ready(function () {  /* for DataTable in table data*/
+        //    $('#myTable').DataTable();
+        //});
+
+        $(document).ready(function () {  
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                 /*   'copy', 'csv',*/
+                    {
+                        extend: 'copyHtml5',
+                        title: 'Copy Document'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'CSV Document'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Products Excel Document'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'Products PDF Document'
+                    },
+                    'print'
+                ]
+            });
+        });
+
+        $(function () {
+            var save = '@TempData["Save"]';
+            if (save != '') {
+                alertify.success(save);
+            }
+
+            var edit = '@TempData["Edit"]';
+            if (edit != '') {
+                alertify.success(edit);
+            }
+
+            var del = '@TempData["Delete"]';
+            if (del != '') {
+                alertify.error(del);
+            }
+        });
+
+
+    </script>
+     
+}
